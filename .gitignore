@@ -1,0 +1,14 @@
+# Documents
+*.pdf
+
+# IDE / editor
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
