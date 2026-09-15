@@ -54,7 +54,7 @@ NIL
 cl-user>(null (fourth *l*))
 T
 
-;; Пункт 7
+;; Пункт 8
 cl-user>(append *l* (third *l*))
 (A 1 (2 B (3)) NIL C 2 B (3))
 ```
