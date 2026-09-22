@@ -65,7 +65,7 @@ cl-user>(append *l* (third *l*))
 </p>
 
 ```lisp
-cl-user>(setq *l* (let ((x '(4))) (list x 'D 'E (append '(6 5) x))))
+cl-user>(setq *l* (let ((x '(4))) (list x 'D 'E (list* 6 5 x))))
 ((4) D E (6 5 4))
 
 cl-user>(eq (first *l*) (last (fourth *l*)))
