@@ -16,7 +16,7 @@
 
 ; TESTS
 (defmacro test (description expr)
-    `(format t "~a | ~:[~c[31mFAIL~;~c[32mPASS~]~c[0m ~%" ,description ,expr #\Escape #\Escape)
+    `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr)
 )
 
 (defmacro expect (actual expected)

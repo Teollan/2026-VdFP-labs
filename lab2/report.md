@@ -75,7 +75,7 @@
 ### Тестові набори та утиліти
 ```lisp
 (defmacro test (description expr)
-    `(format t "~a | ~:[~c[31mFAIL~;~c[32mPASS~]~c[0m ~%" ,description ,expr #\Escape #\Escape)
+    `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr)
 )
 
 (defmacro expect (actual expected)
@@ -105,11 +105,11 @@
 
 ### Тестування
 ```lisp
-task statement example | PASS 
-equal lengths | PASS 
-b is longer | PASS 
-a is empty | PASS 
-b is empty | PASS 
+task statement example | PASS
+equal lengths | PASS
+b is longer | PASS
+a is empty | PASS
+b is empty | PASS
 nil as an element | PASS
 ```
 
@@ -135,7 +135,7 @@ nil as an element | PASS
 ### Тестові набори та утиліти
 ```lisp
 (defmacro test (description expr)
-    `(format t "~a | ~:[~c[31mFAIL~;~c[32mPASS~]~c[0m ~%" ,description ,expr #\Escape #\Escape)
+    `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr)
 )
 
 (defmacro expect (actual expected)
@@ -165,11 +165,11 @@ nil as an element | PASS
 
 ### Тестування
 ```lisp
-task statement example: disjoint | PASS 
-task statement example: intersecting | PASS 
-match at head of a and tail of b | PASS 
-nil is matched as an element | PASS 
-a is empty | PASS 
-b is empty | PASS 
-result is symmetric | PASS 
+task statement example: disjoint | PASS
+task statement example: intersecting | PASS
+match at head of a and tail of b | PASS
+nil is matched as an element | PASS
+a is empty | PASS
+b is empty | PASS
+result is symmetric | PASS
 ```
