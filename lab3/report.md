@@ -1,0 +1,162 @@
+<p align="center"><b>МОНУ НТУУ КПІ ім. Ігоря Сікорського ФПСПМ СПіСКС</b></p>
+
+<p align="center">
+<b>Звіт з лабораторної роботи 3</b><br/>
+"Конструктивний і деструктивний підходи до роботи зі списками"<br/>
+дисципліни "Вступ до функціонального програмування"
+</p>
+
+<p align="right"><b>Студент</b>: Козлов Сергій Олександрович група КВ-33</p>
+<p align="right"><b>Рік</b>: 2026</p>
+
+## Загальне завдання
+Реалізуйте алгоритм сортування чисел у списку двома способами: функціонально і
+імперативно.
+1. Функціональний варіант реалізації має базуватись на використанні рекурсії і
+конструюванні нових списків щоразу, коли необхідно виконати зміну вхідного
+списку. Не допускається використання: псевдо-функцій, деструктивних операцій,
+циклів. Також реалізована функція не має бути функціоналом (тобто приймати на
+вхід функції в якості аргументів).
+2. Імперативний варіант реалізації має базуватись на використанні циклів і
+деструктивних функцій (псевдофункцій). Не допускається використання функцій
+вищого порядку або функцій для роботи зі списками/послідовностями, що
+використовуються як функції вищого порядку. Тим не менш, оригінальний список
+цей варіант реалізації також не має змінювати, тому перед виконанням
+деструктивних змін варто застосувати функцію `copy-list` (в разі необхідності).
+Також реалізована функція не має бути функціоналом (тобто приймати на вхід
+функції в якості аргументів).
+
+Алгоритм, який необхідно реалізувати, задається варіантом.
+
+Кожна реалізована функція має бути протестована для різних тестових наборів. Тести
+мають бути оформленні у вигляді модульних тестів.
+
+## Варіант 6
+Алгоритм сортування вибором за незменшенням.
+
+## Лістинг функції з використанням конструктивного підходу
+```lisp
+(defun sort-selection-functional (lst)
+    (if (null (rest lst))
+        lst
+        (let ((swapped-lst (swap-with-first lst (find-min-index lst))))
+            (cons (first swapped-lst) (sort-selection-functional (rest swapped-lst))))))
+
+(defun find-min-index (lst)
+    (if (null (rest lst))
+        0
+        (let ((rest-min-index (find-min-index (rest lst))))
+            (if (< (first lst) (nth (1+ rest-min-index) lst))
+                0
+                (1+ rest-min-index)))))
+
+(defun swap-with-first (lst index)
+    (if (= index 0)
+        lst
+        (append
+            (list (nth index lst))
+            (subseq lst 1 index)
+            (list (first lst))
+            (nthcdr (1+ index) lst))))
+```
+
+### Тестові набори та утиліти
+```lisp
+(defmacro test (description expr)
+    `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr))
+
+(defmacro expect (actual expected)
+    `(equal ,actual ,expected))
+
+(test "empty list" (expect (sort-selection-functional nil) nil))
+(test "single element" (expect (sort-selection-functional '(1)) '(1)))
+
+(test "two elements, unsorted" (expect (sort-selection-functional '(2 1)) '(1 2)))
+(test "two elements, sorted" (expect (sort-selection-functional '(1 2)) '(1 2)))
+
+(test "already sorted" (expect (sort-selection-functional '(1 2 3 4 5)) '(1 2 3 4 5)))
+(test "reverse sorted" (expect (sort-selection-functional '(5 4 3 2 1)) '(1 2 3 4 5)))
+(test "unsorted" (expect (sort-selection-functional '(3 1 4 5 2)) '(1 2 3 4 5)))
+
+(test "duplicates" (expect (sort-selection-functional '(2 3 1 2 1)) '(1 1 2 2 3)))
+(test "all equal" (expect (sort-selection-functional '(7 7 7)) '(7 7 7)))
+(test "negatives and zero" (expect (sort-selection-functional '(-1 3 0 -5)) '(-5 -1 0 3)))
+(test "mixed number types" (expect (sort-selection-functional '(3/2 -2 1 0.5)) '(-2 0.5 1 3/2)))
+
+(test "input list is not modified"
+    (let ((input (list 3 1 2)))
+        (sort-selection-functional input)
+        (expect input '(3 1 2))))
+```
+
+### Тестування
+```lisp
+empty list | PASS
+single element | PASS
+two elements, unsorted | PASS
+two elements, sorted | PASS
+already sorted | PASS
+reverse sorted | PASS
+unsorted | PASS
+duplicates | PASS
+all equal | PASS
+negatives and zero | PASS
+mixed number types | PASS
+input list is not modified | PASS
+```
+
+## Лістинг функції з використанням деструктивного підходу
+```lisp
+(defun sort-selection-imperative (lst-in)
+    (let ((lst (copy-list lst-in)) (n (length lst-in)))
+        (do ((i 0 (1+ i)))
+            ((>= i (1- n)) lst)
+            (do ((j (1+ i) (1+ j)) (min-idx i))
+                ((>= j n) (rotatef (nth i lst) (nth min-idx lst)))
+                (when (< (nth j lst) (nth min-idx lst)) (setq min-idx j))))))
+```
+
+### Тестові набори та утиліти
+```lisp
+(defmacro test (description expr)
+    `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr))
+
+(defmacro expect (actual expected)
+    `(equal ,actual ,expected))
+
+(test "empty list" (expect (sort-selection-imperative nil) nil))
+(test "single element" (expect (sort-selection-imperative '(1)) '(1)))
+
+(test "two elements, unsorted" (expect (sort-selection-imperative '(2 1)) '(1 2)))
+(test "two elements, sorted" (expect (sort-selection-imperative '(1 2)) '(1 2)))
+
+(test "already sorted" (expect (sort-selection-imperative '(1 2 3 4 5)) '(1 2 3 4 5)))
+(test "reverse sorted" (expect (sort-selection-imperative '(5 4 3 2 1)) '(1 2 3 4 5)))
+(test "unsorted" (expect (sort-selection-imperative '(3 1 4 5 2)) '(1 2 3 4 5)))
+
+(test "duplicates" (expect (sort-selection-imperative '(2 3 1 2 1)) '(1 1 2 2 3)))
+(test "all equal" (expect (sort-selection-imperative '(7 7 7)) '(7 7 7)))
+(test "negatives and zero" (expect (sort-selection-imperative '(-1 3 0 -5)) '(-5 -1 0 3)))
+(test "mixed number types" (expect (sort-selection-imperative '(3/2 -2 1 0.5)) '(-2 0.5 1 3/2)))
+
+(test "input list is not modified"
+    (let ((input (list 3 1 2)))
+        (sort-selection-imperative input)
+        (expect input '(3 1 2))))
+```
+
+### Тестування
+```lisp
+empty list | PASS
+single element | PASS
+two elements, unsorted | PASS
+two elements, sorted | PASS
+already sorted | PASS
+reverse sorted | PASS
+unsorted | PASS
+duplicates | PASS
+all equal | PASS
+negatives and zero | PASS
+mixed number types | PASS
+input list is not modified | PASS
+```
