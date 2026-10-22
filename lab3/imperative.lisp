@@ -1,17 +1,17 @@
 (defun sort-selection-imperative (lst-in)
-    (let ((lst (copy-list lst-in)) (n (length lst-in)))
-        (do ((i 0 (1+ i)))
-            ((>= i (1- n)) lst)
-            (do ((j (1+ i) (1+ j)) (min-idx i))
-                ((>= j n) (rotatef (nth i lst) (nth min-idx lst)))
-                (when (< (nth j lst) (nth min-idx lst)) (setq min-idx j))))))
+  (let ((lst (copy-list lst-in)) (n (length lst-in)))
+    (do ((i 0 (1+ i)))
+        ((>= i (1- n)) lst)
+      (do ((j (1+ i) (1+ j)) (min-idx i))
+          ((>= j n) (rotatef (nth i lst) (nth min-idx lst)))
+        (when (< (nth j lst) (nth min-idx lst)) (setq min-idx j))))))
 
 ; TESTS
 (defmacro test (description expr)
-    `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr))
+  `(format t "~a | ~:[FAIL~;PASS~]~%" ,description ,expr))
 
 (defmacro expect (actual expected)
-    `(equal ,actual ,expected))
+  `(equal ,actual ,expected))
 
 (test "empty list" (expect (sort-selection-imperative nil) nil))
 (test "single element" (expect (sort-selection-imperative '(1)) '(1)))
@@ -29,6 +29,6 @@
 (test "mixed number types" (expect (sort-selection-imperative '(3/2 -2 1 0.5)) '(-2 0.5 1 3/2)))
 
 (test "input list is not modified"
-    (let ((input (list 3 1 2)))
+      (let ((input (list 3 1 2)))
         (sort-selection-imperative input)
         (expect input '(3 1 2))))
