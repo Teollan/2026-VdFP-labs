@@ -1,13 +1,17 @@
-(defun sort-selection (lst &key (key #'identity) (test #'min))
-  (if (null lst)
-      nil
-      (let ((selected (reduce (lambda (item acc)
-                                (if (funcall test (funcall key item) (funcall key acc))
-                                    item
-                                    acc))
-                          lst)))
-        (cons selected (sort-selection (remove selected lst :count 1) :key key :test test)))))
+(defun sort-selection (lst &key (key #'identity) (test #'<))
+  (mapcar #'cdr (sort-pairs (mapcar (lambda (item) (cons (funcall key item) item)) lst) test)))
 
+(defun sort-pairs (pairs test)
+  (if (null pairs)
+      nil
+      (let ((selected (reduce (select-best test) pairs)))
+        (cons selected (sort-pairs (remove selected pairs :count 1) test)))))
+
+(defun select-best (test)
+  (lambda (acc pair)
+    (if (funcall test (car pair) (car acc))
+        pair
+        acc)))
 
 ; TESTS
 (defmacro test (description expr)
