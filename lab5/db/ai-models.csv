@@ -1,0 +1,9 @@
+id;name;api-endpoint;cost-per-100k-tokens
+1;GPT-4o mini;https://api.openai.com/v1/chat/completions;0.015
+2;GPT-4o;https://api.openai.com/v1/chat/completions;0.25
+3;Gemini 2.0 Flash;https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent;0.01
+4;Claude Sonnet 4;https://api.anthropic.com/v1/messages;0.30
+5;Gemini 2.5 Pro;https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent;0.125
+6;text-embedding-3-small;https://api.openai.com/v1/embeddings;0.002
+7;Codestral;https://api.mistral.ai/v1/chat/completions;0.03
+8;Llama 3.1 8B;http://localhost:11434/api/chat;

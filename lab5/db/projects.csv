@@ -1,0 +1,8 @@
+id;name;active-model-id;available-model-ids
+1;Customer Support Bot;2;(1 2 3)
+2;Code Review Assistant;7;(7 2)
+3;Product Image Tagger;5;(5)
+4;Semantic Search Engine;6;(6 3)
+5;Internal Docs Q&A;8;(8 1 6)
+6;Marketing Copy Generator;4;(3 4)
+7;Offline Translator;8;(8)
